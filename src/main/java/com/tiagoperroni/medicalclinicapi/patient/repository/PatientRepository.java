@@ -1,6 +1,6 @@
-package com.tiagoperroni.medicalclinicapi.repository;
+package com.tiagoperroni.medicalclinicapi.patient.repository;
 
-import com.tiagoperroni.medicalclinicapi.model.Patient;
+import com.tiagoperroni.medicalclinicapi.patient.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

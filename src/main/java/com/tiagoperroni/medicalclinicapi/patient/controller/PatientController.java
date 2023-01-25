@@ -1,7 +1,7 @@
-package com.tiagoperroni.medicalclinicapi.controller;
+package com.tiagoperroni.medicalclinicapi.patient.controller;
 
-import com.tiagoperroni.medicalclinicapi.model.Patient;
-import com.tiagoperroni.medicalclinicapi.service.PatientService;
+import com.tiagoperroni.medicalclinicapi.patient.model.Patient;
+import com.tiagoperroni.medicalclinicapi.patient.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

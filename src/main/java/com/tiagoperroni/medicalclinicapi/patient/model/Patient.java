@@ -1,4 +1,4 @@
-package com.tiagoperroni.medicalclinicapi.model;
+package com.tiagoperroni.medicalclinicapi.patient.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.br.CPF;

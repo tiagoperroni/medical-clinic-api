@@ -1,7 +1,8 @@
 package com.tiagoperroni.medicalclinicapi.service;
 
-import com.tiagoperroni.medicalclinicapi.model.Patient;
-import com.tiagoperroni.medicalclinicapi.repository.PatientRepository;
+import com.tiagoperroni.medicalclinicapi.patient.model.Patient;
+import com.tiagoperroni.medicalclinicapi.patient.repository.PatientRepository;
+import com.tiagoperroni.medicalclinicapi.patient.service.PatientService;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.runner.RunWith;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PatientServiceTest {
+public class RoomServiceTest {
 
     @InjectMocks
     private PatientService patientService;
