@@ -1,5 +1,6 @@
 package com.tiagoperroni.medicalclinicapi.patient.service;
 
+import com.tiagoperroni.medicalclinicapi.exceptions.EntityNotFoundException;
 import com.tiagoperroni.medicalclinicapi.patient.model.Patient;
 import com.tiagoperroni.medicalclinicapi.patient.repository.PatientRepository;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +24,7 @@ public class PatientService {
 
     public Patient findPatientById(Long id) {
         return this.patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.format("O paciente de id %s, não foi encontrado.", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("O paciente de id %s, não foi encontrado.", id)));
     }
 
     public Patient savePatient(Patient patient) {

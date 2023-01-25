@@ -1,7 +1,6 @@
 package com.tiagoperroni.medicalclinicapi.room.service;
 
-import com.tiagoperroni.medicalclinicapi.patient.model.Patient;
-import com.tiagoperroni.medicalclinicapi.patient.repository.PatientRepository;
+import com.tiagoperroni.medicalclinicapi.exceptions.EntityNotFoundException;
 import com.tiagoperroni.medicalclinicapi.room.model.Room;
 import com.tiagoperroni.medicalclinicapi.room.repository.RoomRepository;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +24,7 @@ public class RoomService {
 
     public Room findById(Long id) {
         return this.roomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.format("O paciente de id %s, não foi encontrado.", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("A sala de id %s, não foi encontrada.", id)));
     }
 
     public Room save(Room room) {

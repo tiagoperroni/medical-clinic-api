@@ -2,6 +2,7 @@ package com.tiagoperroni.medicalclinicapi.doctor.service;
 
 import com.tiagoperroni.medicalclinicapi.doctor.model.Doctor;
 import com.tiagoperroni.medicalclinicapi.doctor.repository.DoctorRepository;
+import com.tiagoperroni.medicalclinicapi.exceptions.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class DoctorService {
 
     public Doctor findById(Long id) {
         return this.doctorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.format("O Médico de id %s, não foi encontrado.", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("O Médico de id %s, não foi encontrado.", id)));
     }
 
     public Doctor save(Doctor doctor) {
