@@ -1,7 +1,7 @@
 package com.tiagoperroni.medicalclinicapi.doctor.controller;
 
 import com.tiagoperroni.medicalclinicapi.doctor.model.Doctor;
-import com.tiagoperroni.medicalclinicapi.doctor.service.DoctorService;
+import com.tiagoperroni.medicalclinicapi.doctor.service.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 public class DoctorController {
 
     @Autowired
-    private DoctorService doctorService;
+    private DoctorServiceImpl doctorService;
 
     @GetMapping
     public ResponseEntity<List<Doctor>> getAll() {
@@ -28,13 +28,15 @@ public class DoctorController {
     }
 
     @PostMapping
-    public ResponseEntity<Doctor> save(@RequestBody Doctor doctor) {
-        return new ResponseEntity<>(this.doctorService.save(doctor), HttpStatus.CREATED);
+    public ResponseEntity<Void> save(@RequestBody Doctor doctor) {
+        this.doctorService.save(doctor);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Doctor> update(@PathVariable("id") Long id, @RequestBody Doctor doctor) {
-        return new ResponseEntity<>(this.doctorService.update(id, doctor), HttpStatus.OK);
+        this.doctorService.update(id, doctor);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
