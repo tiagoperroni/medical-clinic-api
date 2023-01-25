@@ -1,8 +1,11 @@
 package com.tiagoperroni.medicalclinicapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,12 +17,20 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "C_NAME", length = 100)
+    @NotEmpty(message = "O campo NOME, deve ser preenchido.")
     private String name;
 
+    @Column(name = "C_CPF", unique = true)
+    @CPF(message = "O CPF é inválido, verifique e tente novamente.")
+    @NotEmpty(message = "O campo CPF deve ser preenchido.")
     private String cpf;
 
+    @Column(name = "C_AGE")
+    @NotNull(message = "O campo IDADE, deve ser preenchido. ")
     private Integer age;
 
+    @Column(name = "C_REGISTER_DATE")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate registerDate;
 
