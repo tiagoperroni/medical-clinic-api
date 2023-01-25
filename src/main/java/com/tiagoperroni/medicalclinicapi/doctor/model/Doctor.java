@@ -1,7 +1,6 @@
-package com.tiagoperroni.medicalclinicapi.room.model;
+package com.tiagoperroni.medicalclinicapi.doctor.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -10,26 +9,33 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "TB_ROOM")
-public class Room {
+@Table(name = "TB_DOCTOR")
+public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "C_NUMBER")
-    @NotNull(message = "O campo SALA, deve ser preenchido. ")
-    private Integer roomNumber;
+    @Column(name = "C_NAME")
+    @NotNull(message = "O campo NAME, deve ser preenchido.")
+    private String name;
+
+    @Column(name = "C_CRM")
+    @NotEmpty(message = "O campo CRM, deve ser preenchido.")
+    private String crm;
 
     @Column(name = "C_REGISTER_DATE")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate registerDate;
 
-    public Room() {}
 
-    public Room(Long id, Integer roomNumber, LocalDate registerDate) {
+    public Doctor() {
+    }
+
+    public Doctor(Long id, String name, String crm, LocalDate registerDate) {
         this.id = id;
-        this.roomNumber = roomNumber;
+        this.name = name;
+        this.crm = crm;
         this.registerDate = registerDate;
     }
 
@@ -41,12 +47,20 @@ public class Room {
         this.id = id;
     }
 
-    public Integer getRoomNumber() {
-        return roomNumber;
+    public String getName() {
+        return name;
     }
 
-    public void setRoomNumber(Integer roomNumber) {
-        this.roomNumber = roomNumber;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCrm() {
+        return crm;
+    }
+
+    public void setCrm(String crm) {
+        this.crm = crm;
     }
 
     public LocalDate getRegisterDate() {
@@ -61,8 +75,8 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Room room = (Room) o;
-        return id.equals(room.id);
+        Doctor doctor = (Doctor) o;
+        return id.equals(doctor.id);
     }
 
     @Override

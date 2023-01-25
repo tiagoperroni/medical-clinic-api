@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RoomServiceTest {
+public class PatientServiceTest {
 
     @InjectMocks
     private PatientService patientService;
