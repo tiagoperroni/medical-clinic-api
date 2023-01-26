@@ -29,9 +29,17 @@ public class ExceptionMainHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<StandardMessage> cpfDuplicated(DataIntegrityViolationException ex) {
+    public ResponseEntity<StandardMessage> duplicatedData(DataIntegrityViolationException ex) {
         return new ResponseEntity<>(
-                new StandardMessage(HttpStatus.BAD_REQUEST.value(), List.of("O CPF já está cadastrado na base de dados."),
+                new StandardMessage(HttpStatus.BAD_REQUEST.value(), List.of(ex.getMessage()),
                         LocalDateTime.now()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EntityMissDataException.class)
+    public ResponseEntity<StandardMessage> entityMissData(EntityMissDataException ex) {
+        return new ResponseEntity<>(
+                new StandardMessage(HttpStatus.BAD_REQUEST.value(), List.of(ex.getMessage()),
+                       LocalDateTime.now()), HttpStatus.BAD_REQUEST);
+    }
+
 }

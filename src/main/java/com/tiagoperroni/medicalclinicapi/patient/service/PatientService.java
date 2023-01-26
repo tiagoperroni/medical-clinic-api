@@ -1,5 +1,6 @@
 package com.tiagoperroni.medicalclinicapi.patient.service;
 
+import com.tiagoperroni.medicalclinicapi.exceptions.EntityMissDataException;
 import com.tiagoperroni.medicalclinicapi.exceptions.EntityNotFoundException;
 import com.tiagoperroni.medicalclinicapi.patient.model.Patient;
 import com.tiagoperroni.medicalclinicapi.patient.repository.PatientRepository;
@@ -28,6 +29,7 @@ public class PatientService {
     }
 
     public Patient savePatient(Patient patient) {
+        this.patientDataVerify(patient);
         patient.setRegisterDate(LocalDate.now());
         return this.patientRepository.save(patient);
     }
@@ -41,5 +43,16 @@ public class PatientService {
     public void deletePatient(Long id) {
         var patient = this.findPatientById(id);
         this.patientRepository.delete(patient);
+    }
+
+    /**
+     * Verifies if all data was informed
+     * */
+    private void patientDataVerify(Patient patient) {
+        var patients = this.getPatients();
+
+        if (patients.stream().anyMatch(cpf -> cpf.getCpf().equals(patient.getCpf()))) {
+            throw new EntityMissDataException("O CPF informado já está em uso no sistema.");
+        }
     }
 }

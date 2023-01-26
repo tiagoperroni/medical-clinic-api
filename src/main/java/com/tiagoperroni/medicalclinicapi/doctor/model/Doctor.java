@@ -3,8 +3,6 @@ package com.tiagoperroni.medicalclinicapi.doctor.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -17,11 +15,9 @@ public class Doctor {
     private Long id;
 
     @Column(name = "C_NAME")
-    @NotNull(message = "O campo NAME, deve ser preenchido.")
     private String name;
 
-    @Column(name = "C_CRM")
-    @NotEmpty(message = "O campo CRM, deve ser preenchido.")
+    @Column(name = "C_CRM", unique = true)
     private String crm;
 
     @Column(name = "C_REGISTER_DATE")

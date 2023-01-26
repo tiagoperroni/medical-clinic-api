@@ -2,6 +2,8 @@ package com.tiagoperroni.medicalclinicapi.doctor.service;
 
 import com.tiagoperroni.medicalclinicapi.doctor.model.Doctor;
 import com.tiagoperroni.medicalclinicapi.doctor.repository.DoctorRepository;
+import com.tiagoperroni.medicalclinicapi.exceptions.DuplicatedDataException;
+import com.tiagoperroni.medicalclinicapi.exceptions.EntityMissDataException;
 import com.tiagoperroni.medicalclinicapi.exceptions.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorServiceImpl implements DoctorRepository{
@@ -61,6 +64,9 @@ public class DoctorServiceImpl implements DoctorRepository{
     @Transactional
     @Override
     public void save(Doctor doctor) {
+
+        this.verifyDataOfDoctor(doctor);
+
         int query = this.entityManager.createNativeQuery(
                 "INSERT INTO TB_DOCTOR(id, C_NAME, C_CRM, C_REGISTER_DATE) VALUES (:id, :name, :crm, :date)"
         )
@@ -79,7 +85,10 @@ public class DoctorServiceImpl implements DoctorRepository{
     @Override
     public void update(Long id, Doctor doctor) {
 
-        this.findById(id); // verify if the doctor exists
+        var findDoctor = this.findById(id); // verify if the doctor exists
+        if (!findDoctor.getCrm().equals(doctor.getCrm())) {
+            this.verifyDataOfDoctor(doctor);
+        }
 
         int query = this.entityManager.createNativeQuery(
                 "UPDATE TB_DOCTOR SET C_NAME = :name, C_CRM = :crm WHERE id = :id"
@@ -136,5 +145,20 @@ public class DoctorServiceImpl implements DoctorRepository{
         doctor.setRegisterDate(data.toLocalDate());
 
         return doctor;
+    }
+
+    /**
+     * checks that all data has been entered and if CRM is duplicated - save
+     * */
+    private void verifyDataOfDoctor(Doctor doctor) {
+        if (doctor.getName() == null || doctor.getName() == "" || doctor.getCrm() == null) {
+            throw new EntityMissDataException("Verifque se todo os campos foram informados.");
+        }
+
+        List<Doctor> doctors =  this.getAll();
+
+        if (doctors != null && doctors.stream().anyMatch(x -> x.getCrm().equals(doctor.getCrm()))) {
+            throw new EntityMissDataException("O CRM informado, já está em uso. Verifique por gentileza.");
+        }
     }
 }
