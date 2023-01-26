@@ -25,7 +25,7 @@ public class AppointmentResponseDTO {
         appointmentDTO.setDoctorCRM(appointment.getDoctor().getCrm());
         appointmentDTO.setPatientName(appointment.getPatient().getName());
         appointmentDTO.setRoomNumber(appointment.getRoom().getRoomNumber());
-        appointmentDTO.setDate(LocalDateTime.now());
+        appointmentDTO.setDate(appointment.getDate());
         return appointmentDTO;
     }
 
