@@ -1,5 +1,6 @@
 package com.tiagoperroni.medicalclinicapi.Appointment.dto;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class AppointmentRequestDTO {
@@ -9,6 +10,8 @@ public class AppointmentRequestDTO {
     private Long roomId;
 
     private Long patientId;
+
+    private LocalDateTime appointmentDate;
 
     public Long getDoctorId() {
         return doctorId;
@@ -32,6 +35,14 @@ public class AppointmentRequestDTO {
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;
+    }
+
+    public LocalDateTime getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(LocalDateTime appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
     @Override

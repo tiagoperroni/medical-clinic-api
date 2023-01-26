@@ -1,6 +1,7 @@
 package com.tiagoperroni.medicalclinicapi.Appointment.service;
 
 import com.tiagoperroni.medicalclinicapi.Appointment.dto.AppointmentRequestDTO;
+import com.tiagoperroni.medicalclinicapi.Appointment.dto.AppointmentResponseDTO;
 import com.tiagoperroni.medicalclinicapi.Appointment.model.Appointment;
 import com.tiagoperroni.medicalclinicapi.Appointment.repository.AppointmentRepository;
 import com.tiagoperroni.medicalclinicapi.doctor.service.DoctorServiceImpl;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -28,20 +30,22 @@ public class AppointmentService {
         this.patientService = patientService;
     }
 
-    public List<Appointment> getAll() {
-        return this.appointmentRepository.findAll();
+    public List<AppointmentResponseDTO> getAll() {
+        return this.appointmentRepository.findAll()
+                .stream().map(obj -> AppointmentResponseDTO.convertAppointment(obj)).collect(Collectors.toList());
     }
 
-    public Appointment findById(Long id) {
-        return this.appointmentRepository.findById(id)
+    public AppointmentResponseDTO findById(Long id) {
+        var appointment = this.appointmentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("A consulta de id %s, não foi encontrada.", id)));
+        return AppointmentResponseDTO.convertAppointment(appointment);
     }
 
     public Appointment save(AppointmentRequestDTO appointmentDTO) {
         var doctor = this.doctorService.findById(appointmentDTO.getDoctorId());
         var room = this.roomService.findById(appointmentDTO.getRoomId());
         var patient = this.patientService.findPatientById(appointmentDTO.getPatientId());
-        var appointment = new Appointment(null, doctor, room, patient, LocalDateTime.now());
+        var appointment = new Appointment(null, doctor, room, patient, appointmentDTO.getAppointmentDate());
         return this.appointmentRepository.save(appointment);
     }
 
@@ -50,19 +54,18 @@ public class AppointmentService {
         var doctor = this.doctorService.findById(appointmentDTO.getDoctorId());
         var room = this.roomService.findById(appointmentDTO.getRoomId());
         var patient = this.patientService.findPatientById(appointmentDTO.getPatientId());
-
-        var oldAppointment = this.findById(id);
+        var oldAppointment = this.appointmentRepository.findById(id).orElse(null);
 
         oldAppointment.setDoctor(doctor);
         oldAppointment.setRoom(room);
         oldAppointment.setPatient(patient);
-        oldAppointment.setDate(LocalDateTime.now());
+        oldAppointment.setDate(appointmentDTO.getAppointmentDate());
 
         return this.appointmentRepository.save(oldAppointment);
     }
 
     public void delete(Long id) {
-        var patient = this.findById(id);
+        var patient = this.appointmentRepository.findById(id).orElse(null);
         this.appointmentRepository.delete(patient);
     }
 }

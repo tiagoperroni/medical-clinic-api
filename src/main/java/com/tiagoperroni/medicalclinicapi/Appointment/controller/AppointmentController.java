@@ -1,6 +1,7 @@
 package com.tiagoperroni.medicalclinicapi.Appointment.controller;
 
 import com.tiagoperroni.medicalclinicapi.Appointment.dto.AppointmentRequestDTO;
+import com.tiagoperroni.medicalclinicapi.Appointment.dto.AppointmentResponseDTO;
 import com.tiagoperroni.medicalclinicapi.Appointment.model.Appointment;
 import com.tiagoperroni.medicalclinicapi.Appointment.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +13,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/appointments")
-@CrossOrigin("http://localhost:4200/**")
+@CrossOrigin("*")
 public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
 
     @GetMapping
-    public ResponseEntity<List<Appointment>> getAll() {
+    public ResponseEntity<List<AppointmentResponseDTO>> getAll() {
         return new ResponseEntity<>(this.appointmentService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Appointment> getById(@PathVariable("id") Long id) {
+    public ResponseEntity<AppointmentResponseDTO> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(this.appointmentService.findById(id), HttpStatus.OK);
     }
 
